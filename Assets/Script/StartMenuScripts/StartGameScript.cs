@@ -7,7 +7,6 @@ public class StartGameScript : MonoBehaviour
     float timeSinceStart = 0.0f;
     [SerializeField]
     public Transform earth;
-    public string QuestionScene = "QuestionScene";
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,10 +29,8 @@ public class StartGameScript : MonoBehaviour
 
         if (timeSinceStart >= 2f)
         {
-            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
+            SceneManager.LoadScene(1);
         }
-            
-        
     }
 
     public void StartGame()
