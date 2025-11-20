@@ -67,15 +67,41 @@ namespace Questions
                 new Question1()
                 {
                     Id = 0,
-                    Question = "Sigma are not?",
-                    Answer1 = "YES",
-                    Answer2 = "No",
-                    Answer3 = "Maybe",
-                    Answer4 = "No you",
-                    Answer = 0,
-                    Tip = "Sigma boy dans le bendo",
+                    Question = "Quel est le plus grand pays du monde",
+                    Answer1 = "Canada",
+                    Answer2 = "France",
+                    Answer3 = "Russie",
+                    Answer4 = "Maroc",
+                    Answer = 2,
+                    Tip = "En Asie",
                     AnswerCoordinate = new Coordinate(3, 3)
                 }
+                /*,
+                new Question2()
+                  {
+                      Id = 1,
+                      Question = "Quel pays n'est pas en Asie",
+                      Answer1 = "Chine",
+                      Answer2 = "Japon",
+                      Answer3 = "Corée",
+                      Answer4 = "Ukraine",
+                      Answer = 3,
+                      Tip = "Herp",
+                      AnswerCoordinate = new Coordinate(3, 3)
+                  },
+                 new Question3()
+                  {
+                      Id = 2,
+                      Question = "Quel pays est le plus peuplé",
+                      Answer1 = "Inde",
+                      Answer2 = "Chine",
+                      Answer3 = "États-Unis",
+                      Answer4 = "Nigéria",
+                      Answer = 0,
+                      Tip = "Herp",
+                      AnswerCoordinate = new Coordinate(3, 3)
+                  }
+                  */
             };
         }
 
