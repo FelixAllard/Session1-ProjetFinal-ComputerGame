@@ -37,6 +37,14 @@ public class StartGameScript : MonoBehaviour
     {
         startGame = true;
     }
-
+    public void QuitGame()
+    {
+        
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+    #else
+           Application.Quit();
+    #endif
+    }
 
 }

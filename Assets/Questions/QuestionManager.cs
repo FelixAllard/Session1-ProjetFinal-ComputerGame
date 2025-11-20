@@ -39,12 +39,14 @@ namespace Questions
         {
             if (buttonClicked == questionChosen.Answer)
             {
-                questionTMP.text = "YES MY SIGMA";
+                questionTMP.text = "Bonne Réponse";
+                Start();
             }
             else
             {
-                questionTMP.text = "No MY SIGMA";
+                questionTMP.text = "Mauvaise Réponse";
             }
+
         }
         
         public static List<IQuestion> GetAllQuestions()
@@ -74,8 +76,8 @@ namespace Questions
                     Answer = 2,
                     Tip = "En Asie",
                     AnswerCoordinate = new Coordinate(3, 3)
-                }
-                /*,
+                },
+                
                 new Question2()
                   {
                       Id = 1,
@@ -100,7 +102,7 @@ namespace Questions
                       Tip = "Herp",
                       AnswerCoordinate = new Coordinate(3, 3)
                   }
-                  */
+                  
             };
         }
 
