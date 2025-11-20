@@ -45,7 +45,6 @@ namespace Questions
             {
                 questionTMP.text = "No MY SIGMA";
             }
-            
         }
         
         public static List<IQuestion> GetAllQuestions()
