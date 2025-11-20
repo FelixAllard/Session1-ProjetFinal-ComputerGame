@@ -1,114 +1,139 @@
-/*
+using System;
 using UnityEngine;
-using RJCP.IO.Ports;
-using System.Threading;
 
-using UnityEngine;
-using RJCP.IO.Ports;
 using System.Threading;
-using System.Collections.Generic;
+using RJCP.IO.Ports;
 
 public class ControllerPcManager : MonoBehaviour
 {
+    public static ControllerPcManager Instance;
+
     private SerialPortStream port;
-    private Thread readThread;
+    private Thread scanThread;
     private bool running = false;
 
+    [Header("Serial Settings")]
+    public string targetMessage = "ARDUINO_SERIAL_MEGACONNECTION_CONTROLLER_INITILIAZER_20050412_RADAR";
+    public int baudRate = 115200;
+
+    [Header("Connection State")]
+    public bool portLocked = false;
     public string lastMessage = "";
-    public string targetMessage = "ARDUINO_SERIAL_MEGACONNECTION_CONTROLLER_INITILIAZER_20050412_RADAR";  // Message to look for
-    private bool portLocked = false;
+
+    // Event to call when connection is lost
+    public Action OnConnectionLost;
+
+    // Event to process every received message
+    public Func<string, object> DecodeMessage;
 
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
     {
         running = true;
-
-        // Start scanning ports in background thread
-        readThread = new Thread(ScanPorts);
-        readThread.Start();
+        scanThread = new Thread(ScanCom9);
+        scanThread.Start();
     }
 
-    private void ScanPorts()
+    private void ScanCom9()
     {
+        string portName = "COM9";
+        Debug.Log("Starting COM9 scan...");
+
         while (running && !portLocked)
-        {
-            string[] portNames = SerialPortStream.GetPortNames();
-
-            foreach (string portName in portNames)
-            {
-                if (!running || portLocked) break;
-
-                SerialPortStream testPort = new SerialPortStream(portName, 9600);
-                testPort.ReadTimeout = 500;
-
-                try
-                {
-                    testPort.Open();
-                    Debug.Log("Trying port: " + portName);
-
-                    while (!portLocked && running)
-                    {
-                        if (testPort.BytesToRead > 0)
-                        {
-                            string line = testPort.ReadLine();
-
-                            if (line == targetMessage)
-                            {
-                                Debug.Log("Target message received on port: " + portName);
-                                port = testPort;  // Lock this port
-                                portLocked = true;
-                                lastMessage = line;
-                                break;
-                            }
-                        }
-                        Thread.Sleep(10);
-                    }
-                }
-                catch
-                {
-                    // Ignore ports that can't be opened
-                    testPort.Close();
-                }
-
-                if (!portLocked)
-                {
-                    testPort.Close();
-                }
-            }
-
-            Thread.Sleep(500); // wait before scanning again
-        }
-
-        // Start reading from locked port
-        if (portLocked && port != null && port.IsOpen)
-        {
-            Debug.Log("Locked to port: " + port.PortName);
-            ReadLockedPort();
-        }
-    }
-
-    private void ReadLockedPort()
-    {
-        while (running && portLocked)
         {
             try
             {
-                if (port.BytesToRead > 0)
+                // Only open port if not already open
+                if (port == null)
                 {
-                    string line = port.ReadLine();
-                    lastMessage = line;
+                    port = new SerialPortStream(portName, baudRate);
+                    port.DtrEnable = true;
+                    port.RtsEnable = true;
+                    port.NewLine = "\n"; // optional but recommended
+                    port.ReadTimeout = 50;
+                    port.Open();
+                    Debug.Log("Opened COM9 successfully");
+                    Thread.Sleep(2000); // give Arduino time to reboot
+                    new Thread(ReadCom9Loop).Start();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"Failed to open COM9: {ex.Message}");
+                port?.Close();
+                port = null;
+                Thread.Sleep(500); // retry delay
+            }
+
+            Thread.Sleep(500); // loop delay to avoid spamming
+        }
+
+        Debug.Log("ScanCom9 exiting (portLocked=" + portLocked + ")");
+    }
+
+    private void ReadCom9Loop()
+    {
+        string buffer = "";
+
+        while (running && port != null && port.IsOpen)
+        {
+            try {
+                string data = port.ReadExisting();
+                if (!string.IsNullOrEmpty(data)) {
+                    buffer += data;
+
+                    int lastNL = Math.Max(buffer.LastIndexOf('\n'), buffer.LastIndexOf('\r'));
+                    if (lastNL >= 0) {
+                        string complete = buffer.Substring(0, lastNL);
+                        buffer = buffer.Substring(lastNL + 1);
+
+                        string[] lines = complete.Split(new[] { "\r\n", "\n", "\r" }, 
+                            StringSplitOptions.RemoveEmptyEntries);
+
+                        foreach (string line in lines) {
+                            string trimmed = line.Trim();
+                            Debug.Log("[COM9 READ] " + trimmed);
+
+                            if (!portLocked && trimmed == targetMessage) {
+                                portLocked = true;
+                                port.WriteLine("CONNECTED");
+                            }
+
+                            DecodeMessage?.Invoke(trimmed);
+                        }
+                    }
                 }
             }
-            catch
-            {
-                // Ignore read timeouts
+            catch (Exception ex) {
+                Debug.LogError("Serial fatal error: " + ex);
+                HandleConnectionLost();
+                break;
             }
-            Thread.Sleep(10);
+
+            Thread.Sleep(5);
         }
+    }
+
+
+    private void HandleConnectionLost()
+    {
+        Debug.LogWarning("Serial connection lost!");
+        portLocked = false;
+        lastMessage = "";
+        port?.Close();
+        port = null;
+
+        OnConnectionLost?.Invoke();
     }
 
     void Update()
@@ -124,11 +149,18 @@ public class ControllerPcManager : MonoBehaviour
     {
         running = false;
 
-        if (readThread != null && readThread.IsAlive)
-            readThread.Join();
+        if (scanThread != null && scanThread.IsAlive)
+            scanThread.Join();
 
         if (port != null && port.IsOpen)
             port.Close();
     }
+
+    public void SendMessage(string message)
+    {
+        if (portLocked && port != null && port.IsOpen)
+        {
+            port.WriteLine(message);
+        }
+    }
 }
-*/

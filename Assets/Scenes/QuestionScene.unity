@@ -690,7 +690,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 261080712}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1439282279}
+        m_TargetAssemblyTypeName: Questions.QuestionManager, Assembly-CSharp
+        m_MethodName: AnswerSelected
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &261080712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,7 +823,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 375327137}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1439282279}
+        m_TargetAssemblyTypeName: Questions.QuestionManager, Assembly-CSharp
+        m_MethodName: AnswerSelected
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &375327137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1259,12 +1283,12 @@ GameObject:
   - component: {fileID: 446775803}
   - component: {fileID: 446775802}
   m_Layer: 5
-  m_Name: Question2
+  m_Name: Answer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &446775802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1665,14 +1689,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1439282277}
-        m_TargetAssemblyTypeName: Manager, Assembly-CSharp
-        m_MethodName: correctAnswer
-        m_Mode: 1
+      - m_Target: {fileID: 1439282279}
+        m_TargetAssemblyTypeName: Questions.QuestionManager, Assembly-CSharp
+        m_MethodName: AnswerSelected
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1940,7 +1964,7 @@ GameObject:
   - component: {fileID: 899335276}
   - component: {fileID: 899335275}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1985,7 +2009,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Quel est le plus grand pays du monde ?
+  m_text: '[QUESTION]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2076,7 +2100,7 @@ GameObject:
   - component: {fileID: 1028791559}
   - component: {fileID: 1028791558}
   m_Layer: 5
-  m_Name: Question1
+  m_Name: Question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2430,6 +2454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1439282278}
   - component: {fileID: 1439282277}
+  - component: {fileID: 1439282279}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2444,7 +2469,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439282276}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed02ab63fcefda446a24bb75351a18e0, type: 3}
   m_Name: 
@@ -2467,6 +2492,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1439282279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439282276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc70b28a581941db96b1e623d676a114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Questions.QuestionManager
+  questionTMP: {fileID: 899335275}
+  answer1TMP: {fileID: 137577486}
+  answer2TMP: {fileID: 121026501}
+  answer3TMP: {fileID: 394082694}
+  answer4TMP: {fileID: 403161621}
 --- !u!1 &1491281317
 GameObject:
   m_ObjectHideFlags: 0
@@ -2766,7 +2808,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1996288593}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1439282279}
+        m_TargetAssemblyTypeName: Questions.QuestionManager, Assembly-CSharp
+        m_MethodName: AnswerSelected
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1996288593
 MonoBehaviour:
   m_ObjectHideFlags: 0

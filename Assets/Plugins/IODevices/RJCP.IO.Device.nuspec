@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>RJCP.IO.Device</id>
+    <version>0.8.3</version>
+    <authors>Jason Curl</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/jcurl/RJCP.DLL.DeviceInfo</projectUrl>
+    <description>Get Windows Device Information.</description>
+    <copyright>(C) 2022-2025, Jason Curl</copyright>
+    <repository type="git" commit="0767180048150bf287a9c30348e1c6e7ec706cef" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="RJCP.Core.Environment" version="0.3.0" exclude="Build,Analyzers" />
+        <dependency id="RJCP.Core.SysCompat" version="0.2.0" exclude="Build,Analyzers" />
+        <dependency id="RJCP.Diagnostics.Trace" version="0.2.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="RJCP.Core.Environment" version="0.3.0" exclude="Build,Analyzers" />
+        <dependency id="RJCP.Core.SysCompat" version="0.2.0" exclude="Build,Analyzers" />
+        <dependency id="RJCP.Diagnostics.Trace" version="0.2.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="RJCP.Core.Environment" version="0.3.0" exclude="Build,Analyzers" />
+        <dependency id="RJCP.Diagnostics.Trace" version="0.2.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0">
+        <dependency id="RJCP.Core.Environment" version="0.3.0" exclude="Build,Analyzers" />
+        <dependency id="RJCP.Diagnostics.Trace" version="0.2.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="8.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.0, .NETFramework4.6.2" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.0, .NETFramework4.6.2" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.0, .NETFramework4.6.2" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
