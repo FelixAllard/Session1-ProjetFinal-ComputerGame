@@ -31,7 +31,7 @@ public class ControllerPcManager : MonoBehaviour
     {
         running = true;
         ControllerPcManager.Instance.OnMessage += msg => {
-            communicationManager.SendMessage(msg);
+            communicationManager.ReceivedMessageFromRemote(msg);
             Debug.Log("Received from Arduino (non-heartbeat): " + msg);
         };
         

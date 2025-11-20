@@ -1,69 +1,70 @@
 using System;
+using Communication.ControllerPc;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CommunicationManager : MonoBehaviour
 {
-    static CommunicationManager Instance;
+    public static CommunicationManager Instance;
+
+    private IRemoteInputController currentHandler;
+
     private void Awake()
     {
-        if(Instance!=null)
+        if (Instance != null)
+        {
             Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
+        currentHandler = FindFirstHandlerInScene();
+
+        if (currentHandler != null)
+            Debug.Log("Remote input handler found in scene: " + currentHandler.GetType().Name);
+        else
+            Debug.LogWarning("No remote input handler present in scene.");
+    }
+    private IRemoteInputController FindFirstHandlerInScene()
+    {
+        foreach (var mb in FindObjectsOfType<MonoBehaviour>())
+        {
+            if (mb is IRemoteInputController handler)
+                return handler;
+        }
+        return null;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void ReceivedMessageFromRemote(string msg)
     {
-        if (msg == "BUTTON_A")
+        if (currentHandler == null)
         {
-            Received_A_ButtonPress();
+            Debug.LogWarning("Message received but no handler found: " + msg);
+            return;
         }
-        else if (msg == "BUTTON_B"){
-            Received_B_ButtonPress();
-        }
-        else if (msg == "BUTTON_C")
+
+        switch (msg)
         {
-            Received_C_ButtonPress();
+
+            case "BUTTON_A": currentHandler.OnButtonA(); break;
+            case "BUTTON_B": currentHandler.OnButtonB(); break;
+            case "BUTTON_C": currentHandler.OnButtonC(); break;
+            case "BUTTON_D": currentHandler.OnButtonD(); break;
+            default:
+                Debug.LogError("Received Unidentified Message: " + msg);
+                break;
         }
-        else if (msg == "BUTTON_D")
-        {
-            Received_D_ButtonPress();
-        }
-        else
-        {
-            Debug.LogError("Received Unidentified Message: " + msg);
-        }
     }
+}
 
-    public void Received_A_ButtonPress()
-    {
-        
-    }
-
-    public void Received_B_ButtonPress()
-    {
-        
-    }
-
-    public void Received_C_ButtonPress()
-    {
-        
-    }
-
-    public void Received_D_ButtonPress()
-    {
-        
-    }
+internal interface IRemoteInputHandler
+{
 }

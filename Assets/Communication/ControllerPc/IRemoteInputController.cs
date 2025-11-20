@@ -1,6 +1,7 @@
-﻿namespace Communication.ControllerPc
+﻿
+namespace Communication.ControllerPc
 {
-    public interface IRemoteInputController
+    public interface IRemoteInputController 
     {
         void OnButtonA();
         void OnButtonB();
