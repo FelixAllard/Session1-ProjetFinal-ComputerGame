@@ -5,6 +5,7 @@ using System.Reflection;
 using Questions.Questions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace Questions
@@ -16,13 +17,26 @@ namespace Questions
         public TextMeshProUGUI answer2TMP;
         public TextMeshProUGUI answer3TMP;
         public TextMeshProUGUI answer4TMP;
-
+        
+        public static int lastCorrect;
+        public static string[] lastAnswers = new string[4];
+        
+        public static List<IQuestion> questions;
         public IQuestion questionChosen;
+        
+        
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        
         private void Start()
         {
-            List<IQuestion> questions = GetAllQuestions();
+            questions = GetAllQuestions();
             
             IQuestion questionFound = GetRandomQuestion(questions);
+            
+            questions.Remove(questionFound);
             
             questionChosen = questionFound;
             
@@ -37,10 +51,18 @@ namespace Questions
 
         public void AnswerSelected(int buttonClicked)
         {
+            // On copie les textes dans lastAnswers
+            lastAnswers[0] = answer1TMP.text;
+            lastAnswers[1] = answer2TMP.text;
+            lastAnswers[2] = answer3TMP.text;
+            lastAnswers[3] = answer4TMP.text;
+
+            
             if (buttonClicked == questionChosen.Answer)
             {
                 questionTMP.text = "Bonne Réponse";
-                Start();
+                RightAnswerDisplay.correctAnswerIndex = questionChosen.Answer;
+                SceneManager.LoadScene(2);
             }
             else
             {

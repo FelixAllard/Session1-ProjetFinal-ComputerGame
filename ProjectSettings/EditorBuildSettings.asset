@@ -12,7 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/QuestionScene.unity
     guid: e6111fb9e3ba30e4da2a972674a44b79
   - enabled: 1
-    path: Assets/Scenes/ReplayScene.unity
+    path: Assets/Scenes/RightAnswer.unity
     guid: fd47f61c9ab16854fbff1818ba87032a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_UseUCBPForAssetBundles: 0
