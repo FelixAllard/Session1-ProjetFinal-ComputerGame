@@ -1,4 +1,5 @@
 using System;
+using System.Net.Configuration;
 using Communication.ControllerPc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,21 +51,19 @@ public class CommunicationManager : MonoBehaviour
             Debug.LogWarning("Message received but no handler found: " + msg);
             return;
         }
+        Debug.Log("Button Pressed : "+ msg);
 
-        switch (msg)
+        if(msg.Contains("BUTTON_A"))
+            currentHandler.OnButtonA();
+        else if(msg.Contains("BUTTON_B"))
+            currentHandler.OnButtonB();
+        else if(msg.Contains("BUTTON_C"))
+            currentHandler.OnButtonC();
+        else if(msg.Contains("BUTTON_D"))
+            currentHandler.OnButtonD();
+        else
         {
-
-            case "BUTTON_A": currentHandler.OnButtonA(); break;
-            case "BUTTON_B": currentHandler.OnButtonB(); break;
-            case "BUTTON_C": currentHandler.OnButtonC(); break;
-            case "BUTTON_D": currentHandler.OnButtonD(); break;
-            default:
-                Debug.LogError("Received Unidentified Message: " + msg);
-                break;
+            Debug.LogError("Received Unidentified Message: " + msg);
         }
     }
-}
-
-internal interface IRemoteInputHandler
-{
 }
