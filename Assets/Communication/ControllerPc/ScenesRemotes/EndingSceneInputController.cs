@@ -4,9 +4,10 @@ namespace Communication.ControllerPc.ScenesRemotes
 {
     public class EndingSceneInputController : MonoBehaviour, IRemoteInputController
     {
+        public buttonScript buttonScript;
         public void OnButtonA()
         {
-            throw new System.NotImplementedException();
+            buttonScript.Restart();
         }
 
         public void OnButtonB()

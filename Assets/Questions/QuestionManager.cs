@@ -192,7 +192,7 @@ namespace Questions
             new Question3()
             {
                 Id = 2,
-                Question = "Quel pays est accusé de persécuter la minorité ouïghoure ?",
+                Question = "Quel pays est accusé de persecuter la minorite ouighoure ?",
                 Answer1 = "Russie",
                 Answer2 = "Arabie Saoudite",
                 Answer3 = "Chine",
@@ -202,7 +202,7 @@ namespace Questions
             
             new Question4 ()
             {
-                Question = "De quel pays le congo a t'il obtenue son independance en 1960",
+                Question = "De quel pays le congo a t'il obtenu son independance en 1960",
                 Answer1 = "France",
                 Answer2 = "Belgique",
                 Answer3 = "Spain",

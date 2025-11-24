@@ -93,7 +93,7 @@ public class ControllerPcManager : MonoBehaviour
                 string data = port.ReadExisting();
                 if (!string.IsNullOrEmpty(data))
                 {
-                    Debug.Log("[DEBUG] Raw incoming data: " + data.Replace("\r", "\\r").Replace("\n", "\\n"));
+                    //Debug.Log("[DEBUG] Raw incoming data: " + data.Replace("\r", "\\r").Replace("\n", "\\n"));
                     buffer += data;
 
                     string[] lines = buffer.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
@@ -104,7 +104,7 @@ public class ControllerPcManager : MonoBehaviour
                         string line = lines[i].Trim();
                         if (string.IsNullOrWhiteSpace(line)) continue;
 
-                        Debug.Log("[DEBUG] Complete line received: '" + line + "'");
+                        //Debug.Log("[DEBUG] Complete line received: '" + line + "'");
 
                         // Handshake detection
                         if (!connected && line.Contains(targetMessage))
@@ -135,7 +135,7 @@ public class ControllerPcManager : MonoBehaviour
                             continue;
                         }
 
-                        Debug.Log("[DEBUG] Ignored unknown line: " + line);
+                        //Debug.Log("[DEBUG] Ignored unknown line: " + line);
                     }
                 }
             }

@@ -6,23 +6,25 @@ namespace Communication.ControllerPc.ScenesRemotes
     {
         public StartGameScript startGame;
         public void OnButtonA()
+        
         {
             startGame.StartGame();
         }
 
         public void OnButtonB()
         {
-            GameSettings.Instance.easyMode = true;
+            startGame.easyToggle.isOn = !startGame.easyToggle.isOn;
+            startGame.hardToggle.isOn = !startGame.hardToggle.isOn;
         }
 
         public void OnButtonC()
         {
-            throw new System.NotImplementedException();
+
         }
 
         public void OnButtonD()
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }
