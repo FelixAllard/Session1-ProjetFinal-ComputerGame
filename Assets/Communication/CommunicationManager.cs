@@ -66,4 +66,13 @@ public class CommunicationManager : MonoBehaviour
             Debug.LogError("Received Unidentified Message: " + msg);
         }
     }
+
+    public void SendMessageToArduino(string message)
+    {
+        
+    }
+    public void ReceivedMessageFromArduino(string message)
+    {
+        
+    }
 }
