@@ -1216,7 +1216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 386915958}
-  - component: {fileID: 386915957}
+  - component: {fileID: 386915959}
   m_Layer: 0
   m_Name: RemoteInputController
   m_TagString: Untagged
@@ -1224,18 +1224,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &386915957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 386915956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c01a3c5ea54172a3d1a930befd3d1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Communication.ControllerPc.ScenesRemotes.RetryRemoteInputController
 --- !u!4 &386915958
 Transform:
   m_ObjectHideFlags: 0
@@ -1251,6 +1239,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &386915959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386915956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c67655767734f09a32cc09e82c559bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Communication.ControllerPc.ScenesRemotes.EndingSceneInputController
 --- !u!1 &442527002
 GameObject:
   m_ObjectHideFlags: 0

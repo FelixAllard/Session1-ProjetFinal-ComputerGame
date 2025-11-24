@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365dca79993e26941b36b397e9179e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControllerPcManager
-  comPort: COM14
+  comPort: COM10
   baudRate: 115200
   targetMessage: ARDUINO_SERIAL_MEGACONNECTION_CONTROLLER_INITILIAZER_20050412_RADAR
 --- !u!114 &1092801120
@@ -2003,10 +2003,10 @@ RectTransform:
   - {fileID: 1335700049}
   - {fileID: 1047825960}
   - {fileID: 959572938}
-  - {fileID: 1422801697}
   - {fileID: 1020147434}
   - {fileID: 112523502}
   - {fileID: 225350532}
+  - {fileID: 1422801697}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

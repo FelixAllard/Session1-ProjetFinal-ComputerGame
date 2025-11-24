@@ -12,7 +12,7 @@ namespace Communication.ControllerPc.ScenesRemotes
 
         public void OnButtonB()
         {
-            throw new System.NotImplementedException();
+            GameSettings.Instance.easyMode = true;
         }
 
         public void OnButtonC()
