@@ -977,6 +977,7 @@ GameObject:
   - component: {fileID: 1092801118}
   - component: {fileID: 1092801119}
   - component: {fileID: 1092801120}
+  - component: {fileID: 1092801121}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1026,6 +1027,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1ff8a6550c86b4bae2ed0f25afcbbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CommunicationManager
+--- !u!114 &1092801121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092801117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32d82c25a5c4452b9b3b31cd5ddd65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Communication.RobotPc.BlootoothCommunicationManager
+  receivePortName: COM15
+  sendPortName: COM16
 --- !u!1 &1335700048
 GameObject:
   m_ObjectHideFlags: 0
