@@ -6,7 +6,9 @@ using Questions.Questions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 namespace Questions
 {
@@ -18,119 +20,252 @@ namespace Questions
         public TextMeshProUGUI answer3TMP;
         public TextMeshProUGUI answer4TMP;
         
+        public Button[] answerButtons;
+        public Button nextButton;
+        
         public static int lastCorrect;
         public static string[] lastAnswers = new string[4];
         
         public static List<IQuestion> questions;
         public IQuestion questionChosen;
         
+        private Color[] originalColors; 
+      
         
-        private void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+        public TextMeshProUGUI timerTMP;
+        public TextMeshProUGUI scoreTMP;
+
+        private float timer = 30f;
+        public static int score;
+
+        private bool answered = false;
+        
         
         private void Start()
         {
-            questions = GetAllQuestions();
+           
+            originalColors = new Color[answerButtons.Length];
+            for (int i = 0; i < answerButtons.Length; i++)
+                originalColors[i] = answerButtons[i].GetComponent<Image>().color;
+
+          
+            nextButton.gameObject.SetActive(false);
+
+            if (questions == null || questions.Count == 0)
+            {
+                if (GameSettings.Instance.easyMode)
+                    questions = new List<IQuestion>(EasyQuestions);
+                else if (!GameSettings.Instance.easyMode)
+                    questions = new List<IQuestion>(HardQuestions);
+            }
+
+            questionChosen = GetRandomQuestion(questions);
+            questions.Remove(questionChosen);
+
             
-            IQuestion questionFound = GetRandomQuestion(questions);
+                questionTMP.text = questionChosen.Question;
+
+                answer1TMP.text = questionChosen.Answer1;
+                answer2TMP.text = questionChosen.Answer2;
+                answer3TMP.text = questionChosen.Answer3;
+                answer4TMP.text = questionChosen.Answer4;
             
-            questions.Remove(questionFound);
-            
-            questionChosen = questionFound;
-            
-            questionTMP.text = questionFound.Question;
-            
-            answer1TMP.text = questionFound.Answer1;
-            answer2TMP.text = questionFound.Answer2;
-            answer3TMP.text = questionFound.Answer3;
-            answer4TMP.text = questionFound.Answer4;
-            
+          
         }
 
         public void AnswerSelected(int buttonClicked)
         {
-            // On copie les textes dans lastAnswers
-            lastAnswers[0] = answer1TMP.text;
-            lastAnswers[1] = answer2TMP.text;
-            lastAnswers[2] = answer3TMP.text;
-            lastAnswers[3] = answer4TMP.text;
+            if (answered) return;
+            answered = true;
 
-            
+            // désactive les boutons
+            foreach (var b in answerButtons)
+                b.interactable = false;
+
+            // Colorier
+            for (int i = 0; i < answerButtons.Length; i++)
+            {
+                Image img = answerButtons[i].GetComponent<Image>();
+
+                if (i == questionChosen.Answer)
+                    img.color = Color.green;
+                else
+                    img.color = Color.red;
+            }
+
+            // Score ✔️
             if (buttonClicked == questionChosen.Answer)
             {
-                questionTMP.text = "Bonne Réponse";
-                RightAnswerDisplay.correctAnswerIndex = questionChosen.Answer;
-                SceneManager.LoadScene(2);
+                questionTMP.text = "Bonne Reponse";
+
+                int questionScore = 5000;
+
+                if (timer <= 30)
+                {
+                    float penalty = (30 - timer) * 100;
+                    questionScore -= Mathf.RoundToInt(penalty);
+
+                    if (questionScore < 0) questionScore = 0;
+                }
+
+                score += questionScore;
+                
+                scoreTMP.text = "Score : " + questionScore;
             }
             else
             {
-                questionTMP.text = "Mauvaise Réponse";
+                questionTMP.text = "Mauvaise Reponse";
+                scoreTMP.text = "Score : " + score;
             }
 
+            nextButton.gameObject.SetActive(true);
         }
+
         
-        public static List<IQuestion> GetAllQuestions()
-        { 
-            /*List<IQuestion> questions = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.IsClass &&
-                            !t.IsAbstract &&
-                            typeof(IQuestion).IsAssignableFrom(t))
-                .ToList();
-
-            int id = 0;
-            foreach (var question in questions)
+        public static List<IQuestion> EasyQuestions = new List<IQuestion>()
+        {
+            new Question1()
             {
-                question. = id++;
-            }*/
-            return new List<IQuestion>()
+                Id = 0,
+                Question = "Quel est le plus grand pays du monde",
+                Answer1 = "Canada",
+                Answer2 = "France",
+                Answer3 = "Russie",
+                Answer4 = "Maroc",
+                Answer = 2
+            },
+            new Question2()
             {
-                new Question1()
-                {
-                    Id = 0,
-                    Question = "Quel est le plus grand pays du monde",
-                    Answer1 = "Canada",
-                    Answer2 = "France",
-                    Answer3 = "Russie",
-                    Answer4 = "Maroc",
-                    Answer = 2,
-                    Tip = "En Asie",
-                    AnswerCoordinate = new Coordinate(3, 3)
-                },
-                
-                new Question2()
-                  {
-                      Id = 1,
-                      Question = "Quel pays n'est pas en Asie",
-                      Answer1 = "Chine",
-                      Answer2 = "Japon",
-                      Answer3 = "Corée",
-                      Answer4 = "Ukraine",
-                      Answer = 3,
-                      Tip = "Herp",
-                      AnswerCoordinate = new Coordinate(3, 3)
-                  },
-                 new Question3()
-                  {
-                      Id = 2,
-                      Question = "Quel pays est le plus peuplé",
-                      Answer1 = "Inde",
-                      Answer2 = "Chine",
-                      Answer3 = "États-Unis",
-                      Answer4 = "Nigéria",
-                      Answer = 0,
-                      Tip = "Herp",
-                      AnswerCoordinate = new Coordinate(3, 3)
-                  }
-                  
-            };
-        }
+                Id = 1,
+                Question = "Quel pays n'est pas en Asie",
+                Answer1 = "Chine",
+                Answer2 = "Japon",
+                Answer3 = "Corée",
+                Answer4 = "Ukraine",
+                Answer = 3
+            },
+            new Question3()
+            {
+                Id = 2,
+                Question = "Quel pays est le plus peuple",
+                Answer1 = "Inde",
+                Answer2 = "Chine",
+                Answer3 = "États-Unis",
+                Answer4 = "Nigéria",
+                Answer = 0
+            },
+            new Question4()
+            {
+                Id = 3,
+                Question = "Quel pays a une feuille d'erable sur son drapeau",
+                Answer1 = "Mexique",
+                Answer2 = "Canada",
+                Answer3 = "Italie",
+                Answer4 = "Egypte",
+                Answer = 1
+            }
+        };
 
+        public static List<IQuestion> HardQuestions = new List<IQuestion>()
+        {
+            new Question1()
+            {
+                Id = 0,
+                Question = "Sur quel continent se situe le departement francais de la Guyane",
+                Answer1 = "Amerique du Sud",
+                Answer2 = "Afrique",
+                Answer3 = "Europe",
+                Answer4 = "Asie",
+                Answer = 0
+            },
+            new Question2()
+            {
+                Id = 1,
+                Question = "Quel pays n'est pas en Europe",
+                Answer1 = "Estonie",
+                Answer2 = "Moldavie",
+                Answer3 = "Andorre",
+                Answer4 = "Armenie",
+                Answer = 3
+            },
+            
+            new Question3()
+            {
+                Id = 2,
+                Question = "Quel pays est accusé de persécuter la minorité ouïghoure ?",
+                Answer1 = "Russie",
+                Answer2 = "Arabie Saoudite",
+                Answer3 = "Chine",
+                Answer4 = "Colombie",
+                Answer = 2
+            },
+            
+            new Question4 ()
+            {
+                Question = "De quel pays le congo a t'il obtenue son independance en 1960",
+                Answer1 = "France",
+                Answer2 = "Belgique",
+                Answer3 = "Spain",
+                Answer4= "Royaume-Uni",
+                Answer = 1
+            },
+            
+        };
+        
         public IQuestion GetRandomQuestion(List<IQuestion> x)
         {
             return x[Random.Range(0, x.Count)];
         }
+        
+        public void Next()
+        {
+            if (questions == null || questions.Count == 0)
+            {
+                SceneManager.LoadScene(2);
+                return;
+            }
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        
+        private void Update()
+        {
+            if (answered) return; // stop timer si réponse donnée
+
+            timer -= Time.deltaTime;
+
+            if (timer < 0)
+            {
+                timer = 0;
+                ForceWrongAnswer();
+            }
+
+            timerTMP.text = timer.ToString("0"); // affiche juste un entier
+        }
+        private void ForceWrongAnswer()
+        {
+            answered = true;
+
+            // colorie boutons
+            for (int i = 0; i < answerButtons.Length; i++)
+            {
+                Image img = answerButtons[i].GetComponent<Image>();
+
+                if (i == questionChosen.Answer)
+                    img.color = Color.green;
+                else
+                    img.color = Color.red;
+            }
+
+            // désactive les boutons
+            foreach (var b in answerButtons)
+                b.interactable = false;
+
+            questionTMP.text = "Temps ecoule ! Mauvaise reponse";
+            
+            scoreTMP.text = "Score : " + 0;
+
+            nextButton.gameObject.SetActive(true);
+        }
+
     }
 }

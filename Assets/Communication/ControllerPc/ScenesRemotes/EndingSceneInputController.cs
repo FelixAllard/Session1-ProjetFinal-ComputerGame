@@ -2,12 +2,11 @@
 
 namespace Communication.ControllerPc.ScenesRemotes
 {
-    public class RetryRemoteInputController: MonoBehaviour, IRemoteInputController
+    public class EndingSceneInputController : MonoBehaviour, IRemoteInputController
     {
-        RightAnswerDisplay rightAnswerDisplay;
         public void OnButtonA()
         {
-            rightAnswerDisplay.Next();
+            throw new System.NotImplementedException();
         }
 
         public void OnButtonB()
