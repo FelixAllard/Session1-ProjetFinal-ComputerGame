@@ -4,9 +4,10 @@ namespace Communication.ControllerPc.ScenesRemotes
 {
     public class MainMenutRemoteInputController : MonoBehaviour, IRemoteInputController
     {
+        public StartGameScript startGame;
         public void OnButtonA()
         {
-            throw new System.NotImplementedException();
+            startGame.StartGame();
         }
 
         public void OnButtonB()

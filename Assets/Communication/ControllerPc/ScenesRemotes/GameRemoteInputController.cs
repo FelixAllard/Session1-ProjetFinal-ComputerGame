@@ -1,4 +1,5 @@
-﻿using Questions;
+﻿using System;
+using Questions;
 using UnityEngine;
 
 namespace Communication.ControllerPc.ScenesRemotes
@@ -7,6 +8,7 @@ namespace Communication.ControllerPc.ScenesRemotes
     {
         public QuestionManager questionManager;
         
+
         public void OnButtonA()
         {
             questionManager.AnswerSelected(0);

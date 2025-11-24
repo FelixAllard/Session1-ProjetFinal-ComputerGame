@@ -1,183 +1,218 @@
 using System;
 using System.IO.Ports;
 using System.Threading;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ControllerPcManager : MonoBehaviour
 {
     public static ControllerPcManager Instance;
 
+    [Header("Serial Settings")]
+    public string comPort = "COM14"; // <-- set your port here
+    public int baudRate = 115200;
+    public string targetMessage = "ARDUINO_SERIAL_MEGACONNECTION";
+
     private SerialPort port;
     private Thread readThread;
     private bool running = false;
-
-    public string targetMessage = "ARDUINO_SERIAL_MEGACONNECTION_CONTROLLER_INITILIAZER_20050412_RADAR";
-    public int baudRate = 115200;
-
-    private float lastHeartbeatTime = 0f;
     private bool connected = false;
+    private float lastHeartbeatTime = 0f;
+
+    // Queue for thread-safe message handling
+    private readonly Queue<string> messageQueue = new Queue<string>();
+    private readonly object queueLock = new object();
 
     public Action OnDisconnected;
     public Action<string> OnMessage;
 
-    public CommunicationManager communicationManager;
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void Start()
     {
         running = true;
-        ControllerPcManager.Instance.OnMessage += msg => {
-            communicationManager.ReceivedMessageFromRemote(msg);
-            Debug.Log("Received from Arduino (non-heartbeat): " + msg);
-        };
-        
-        new Thread(PortScanLoop).Start();
+        Debug.Log("[DEBUG] Opening known COM port: " + comPort);
+        TryOpenPort(comPort);
     }
 
-    // ============================================================
-    //  AUTO SCAN FOR ARDUINO
-    // ============================================================
-    void PortScanLoop()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        while (running)
-        {
-            if (!connected)
-            {
-                foreach (string com in SerialPort.GetPortNames())
-                {
-                    TryOpenPort(com);
-                    if (connected) break;
-                }
-            }
-
-            Thread.Sleep(500);
-        }
+        // Optional: refresh any scene-specific references
+        Debug.Log("[DEBUG] Scene loaded: " + scene.name);
     }
 
-    bool TryOpenPort(string com)
+    private bool TryOpenPort(string com)
     {
         try
         {
             port = new SerialPort(com, baudRate)
             {
-                NewLine = "\n",
-                ReadTimeout = 50,
+                ReadTimeout = -1,
                 DtrEnable = false,
                 RtsEnable = false
             };
-
             port.Open();
-            Debug.Log("Opened " + com);
+            Debug.Log("[DEBUG] Port opened: " + com);
 
             readThread = new Thread(ReadLoop);
+            readThread.IsBackground = true;
             readThread.Start();
 
             return true;
         }
-        catch
+        catch (Exception e)
         {
+            Debug.LogError("[DEBUG] Failed to open port " + com + ": " + e.Message);
             port = null;
             return false;
         }
     }
 
-    // ============================================================
-    //  READ LOOP
-    // ============================================================
-    void ReadLoop()
+    private void ReadLoop()
     {
         string buffer = "";
+        Debug.Log("[DEBUG] Starting read loop...");
 
         while (running && port != null && port.IsOpen)
         {
             try
             {
-                string incoming = port.ReadExisting();
-                if (incoming.Length > 0)
+                string data = port.ReadExisting();
+                if (!string.IsNullOrEmpty(data))
                 {
-                    buffer += incoming;
+                    Debug.Log("[DEBUG] Raw incoming data: " + data.Replace("\r", "\\r").Replace("\n", "\\n"));
+                    buffer += data;
 
-                    while (buffer.Contains("\n"))
+                    string[] lines = buffer.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
+                    buffer = lines[lines.Length - 1]; // keep last partial line
+
+                    for (int i = 0; i < lines.Length - 1; i++)
                     {
-                        int idx = buffer.IndexOf("\n");
-                        string line = buffer.Substring(0, idx).Trim();
-                        buffer = buffer.Substring(idx + 1);
+                        string line = lines[i].Trim();
+                        if (string.IsNullOrWhiteSpace(line)) continue;
 
-                        HandleLine(line);
+                        Debug.Log("[DEBUG] Complete line received: '" + line + "'");
+
+                        // Handshake detection
+                        if (!connected && line.Contains(targetMessage))
+                        {
+                            port.WriteLine("CONNECTED");
+                            connected = true;
+                            lastHeartbeatTime = Time.time;
+                            Debug.Log(">>> HANDSHAKE COMPLETE <<< (line: '" + line + "')");
+                            continue;
+                        }
+
+                        // Heartbeat
+                        if (line == "ALIVE")
+                        {
+                            lastHeartbeatTime = Time.time;
+                            Debug.Log("[DEBUG] Heartbeat received");
+                            continue;
+                        }
+
+                        // Queue button messages to main thread
+                        if (line.Contains("BUTTON_"))
+                        {
+                            lock (queueLock)
+                            {
+                                messageQueue.Enqueue(line);
+                            }
+                            Debug.Log("[DEBUG] Queued button message: " + line);
+                            continue;
+                        }
+
+                        Debug.Log("[DEBUG] Ignored unknown line: " + line);
                     }
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                Debug.LogError("[DEBUG] Serial read error: " + e.Message);
+            }
 
             Thread.Sleep(5);
         }
+
+        Debug.Log("[DEBUG] Exiting read loop...");
     }
 
-    // ============================================================
-    //  PROCESS EACH LINE
-    // ============================================================
-    void HandleLine(string line)
-    {
-        Debug.Log("[SERIAL] " + line);
-
-        // handshake message
-        if (!connected && line == targetMessage)
-        {
-            port.WriteLine("CONNECTED");
-            connected = true;
-            lastHeartbeatTime = Time.time;
-            Debug.Log(">>> HANDSHAKE COMPLETE <<<");
-            return;
-        }
-
-        // heartbeat
-        if (line == "ALIVE")
-        {
-            lastHeartbeatTime = Time.time;
-            return;
-        }
-
-        // non-heartbeat → user logic
-        OnMessage?.Invoke(line);
-    }
-
-    // ============================================================
-    //  HEARTBEAT WATCHDOG
-    // ============================================================
     void Update()
     {
-        if (connected)
+        // Process queued messages on main thread
+        lock (queueLock)
         {
-            if (Time.time - lastHeartbeatTime > 3f)
+            while (messageQueue.Count > 0)
             {
-                Debug.LogWarning("Heartbeat lost! Reconnecting…");
-                connected = false;
-                OnDisconnected?.Invoke();
-
-                if (port != null)
+                string msg = messageQueue.Dequeue();
+                CommunicationManager cm = CommunicationManager.Instance;
+                if (cm != null)
                 {
-                    try { port.Close(); } catch { }
+                    cm.ReceivedMessageFromRemote(msg);
+                    Debug.Log("[DEBUG] Processed BUTTON on main thread: " + msg);
+                }
+            }
+        }
+
+        // Heartbeat watchdog
+        if (connected && Time.time - lastHeartbeatTime > 3f)
+        {
+            Debug.LogWarning("[DEBUG] Heartbeat lost! Reconnecting…");
+            connected = false;
+            OnDisconnected?.Invoke();
+
+            if (port != null)
+            {
+                try
+                {
+                    port.Close();
+                    Debug.Log("[DEBUG] Port closed due to heartbeat loss");
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("[DEBUG] Error closing port: " + e.Message);
                 }
             }
         }
     }
 
-    // ============================================================
-    //  SEND
-    // ============================================================
     public void SendMessage(string msg)
     {
         if (connected && port != null && port.IsOpen)
+        {
+            Debug.Log("[DEBUG] Sending message: " + msg);
             port.WriteLine(msg);
+        }
+        else
+        {
+            Debug.Log("[DEBUG] Cannot send message, not connected");
+        }
     }
 
     void OnApplicationQuit()
     {
         running = false;
-        try { port?.Close(); } catch { }
+        try
+        {
+            port?.Close();
+            Debug.Log("[DEBUG] Port closed on application quit");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("[DEBUG] Error closing port on quit: " + e.Message);
+        }
     }
 }
