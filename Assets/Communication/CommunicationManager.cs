@@ -26,6 +26,11 @@ public class CommunicationManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void Start()
+    {
+        ESP_RobotConnection.Instance.OnMessageReceived += ReceivedMessageFromRobot;
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         currentHandler = FindFirstHandlerInScene();
@@ -78,6 +83,9 @@ public class CommunicationManager : MonoBehaviour
     }
     public void ReceivedMessageFromRobot(string message)
     {
+        Debug.Log("Received Message: " + message);
+        if(message.Contains("Heart"))
+            return;
         
     }
 }

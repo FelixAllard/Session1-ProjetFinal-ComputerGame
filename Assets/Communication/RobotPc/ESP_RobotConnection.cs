@@ -40,6 +40,8 @@ namespace Communication.RobotPc
         void Start()
         {
             Connect();
+            Send("Connected");
+            
         }
 
         void OnApplicationQuit()
@@ -62,6 +64,7 @@ namespace Communication.RobotPc
 
                 receiveThread = new Thread(ReceiveLoop);
                 receiveThread.Start();
+                OnMessageReceived += CommunicationManager.Instance.ReceivedMessageFromRobot;
 
                 Debug.Log("Connected to ESP8266!");
             }
@@ -76,6 +79,7 @@ namespace Communication.RobotPc
         // -----------------------------
         public void Disconnect()
         {
+            OnMessageReceived -= CommunicationManager.Instance.ReceivedMessageFromRobot;
             running = false;
 
             if (receiveThread != null && receiveThread.IsAlive)

@@ -438,6 +438,7 @@ GameObject:
   - component: {fileID: 638477097}
   - component: {fileID: 638477096}
   - component: {fileID: 638477095}
+  - component: {fileID: 638477099}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1264,6 +1265,7 @@ GameObject:
   - component: {fileID: 1092801119}
   - component: {fileID: 1092801120}
   - component: {fileID: 1092801121}
+  - component: {fileID: 1092801122}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1320,15 +1322,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092801117}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d32d82c25a5c4452b9b3b31cd5ddd65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BluetoothManager
-  easyMode: 1
   comPort: COM16
   baudRate: 9600
   sendInterval: 3
+--- !u!114 &1092801122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092801117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92802c9b898f4199802e77cc36b36a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Communication.RobotPc.ESP_RobotConnection
+  ip: 192.168.4.1
+  port: 23
+  CommunicationManager: {fileID: 1092801120}
 --- !u!1 &1221124156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +1921,7 @@ GameObject:
   - component: {fileID: 1421422852}
   - component: {fileID: 1421422851}
   - component: {fileID: 1421422856}
+  - component: {fileID: 1421422855}
   m_Layer: 5
   m_Name: MainMenuCanvas
   m_TagString: Untagged
@@ -2002,21 +2019,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1421422856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1421422850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e9cf9c5a2449f649b15d79a4fac0512, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StartGameScript
-  earth: {fileID: 1422801697}
-  easyToggle: {fileID: 1480403353}
-  hardToggle: {fileID: 1485376905}
 --- !u!114 &1421422855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2032,6 +2034,21 @@ MonoBehaviour:
   earth: {fileID: 1422801697}
   easyToggle: {fileID: 0}
   hardToggle: {fileID: 0}
+--- !u!114 &1421422856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421422850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e9cf9c5a2449f649b15d79a4fac0512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartGameScript
+  earth: {fileID: 1422801697}
+  easyToggle: {fileID: 1480403353}
+  hardToggle: {fileID: 1485376905}
 --- !u!1 &1422801696
 GameObject:
   m_ObjectHideFlags: 0
