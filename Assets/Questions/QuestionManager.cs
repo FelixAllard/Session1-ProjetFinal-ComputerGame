@@ -132,7 +132,8 @@ namespace Questions
                 Answer2 = "France",
                 Answer3 = "Russie",
                 Answer4 = "Maroc",
-                Answer = 2
+                Answer = 2,
+                Letter ='A'
             },
             new Question2()
             {
@@ -142,7 +143,8 @@ namespace Questions
                 Answer2 = "Japon",
                 Answer3 = "Corée",
                 Answer4 = "Ukraine",
-                Answer = 3
+                Answer = 3,
+                Letter ='B'
             },
             new Question3()
             {
@@ -152,7 +154,8 @@ namespace Questions
                 Answer2 = "Chine",
                 Answer3 = "États-Unis",
                 Answer4 = "Nigéria",
-                Answer = 0
+                Answer = 0,
+                Letter ='C'
             },
             new Question4()
             {
@@ -162,7 +165,8 @@ namespace Questions
                 Answer2 = "Canada",
                 Answer3 = "Italie",
                 Answer4 = "Egypte",
-                Answer = 1
+                Answer = 1,
+                Letter ='D'
             }
         };
 
@@ -176,7 +180,8 @@ namespace Questions
                 Answer2 = "Afrique",
                 Answer3 = "Europe",
                 Answer4 = "Asie",
-                Answer = 0
+                Answer = 0,
+                Letter ='E'
             },
             new Question2()
             {
@@ -186,7 +191,8 @@ namespace Questions
                 Answer2 = "Moldavie",
                 Answer3 = "Andorre",
                 Answer4 = "Armenie",
-                Answer = 3
+                Answer = 3,
+                Letter ='F'
             },
             
             new Question3()
@@ -197,7 +203,8 @@ namespace Questions
                 Answer2 = "Arabie Saoudite",
                 Answer3 = "Chine",
                 Answer4 = "Colombie",
-                Answer = 2
+                Answer = 2,
+                Letter ='G'
             },
             
             new Question4 ()
@@ -207,7 +214,8 @@ namespace Questions
                 Answer2 = "Belgique",
                 Answer3 = "Spain",
                 Answer4= "Royaume-Uni",
-                Answer = 1
+                Answer = 1,
+                Letter ='H'
             },
             
         };

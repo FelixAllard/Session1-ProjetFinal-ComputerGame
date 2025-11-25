@@ -11,6 +11,8 @@
         public string Answer4;
         
         public int Answer; // 0-3
+
+        public char Letter;
         
         public Coordinate AnswerCoordinate;
         public string Tip;
