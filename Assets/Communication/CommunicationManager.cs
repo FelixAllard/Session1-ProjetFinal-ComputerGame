@@ -1,6 +1,7 @@
 using System;
 using System.Net.Configuration;
 using Communication.ControllerPc;
+using Communication.RobotPc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,7 @@ public class CommunicationManager : MonoBehaviour
     public static CommunicationManager Instance;
 
     private IRemoteInputController currentHandler;
+    
 
     private void Awake()
     {
@@ -67,11 +69,14 @@ public class CommunicationManager : MonoBehaviour
         }
     }
 
-    public void SendMessageToArduino(string message)
+    public void SendMessageToRobot(string message)
     {
+        if (message == "" || message == null)
+            throw new ArgumentNullException("Why is your string empty? You think I can send air through wifi???");
         
+        ESP_RobotConnection.Instance.Send(message);
     }
-    public void ReceivedMessageFromArduino(string message)
+    public void ReceivedMessageFromRobot(string message)
     {
         
     }

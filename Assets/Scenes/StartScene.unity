@@ -506,6 +506,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &638477099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638477094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e9cf9c5a2449f649b15d79a4fac0512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartGameScript
+  earth: {fileID: 1422801697}
+  easyToggle: {fileID: 0}
+  hardToggle: {fileID: 0}
 --- !u!1 &790243403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,10 +1322,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1092801117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d89c499969bd83429215a9ab7db8dc4, type: 3}
+  m_Script: {fileID: 11500000, guid: d32d82c25a5c4452b9b3b31cd5ddd65d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::BluetoothManager
   easyMode: 1
+  comPort: COM16
+  baudRate: 9600
+  sendInterval: 3
 --- !u!1 &1221124156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1999,6 +2017,21 @@ MonoBehaviour:
   earth: {fileID: 1422801697}
   easyToggle: {fileID: 1480403353}
   hardToggle: {fileID: 1485376905}
+--- !u!114 &1421422855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421422850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e9cf9c5a2449f649b15d79a4fac0512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartGameScript
+  earth: {fileID: 1422801697}
+  easyToggle: {fileID: 0}
+  hardToggle: {fileID: 0}
 --- !u!1 &1422801696
 GameObject:
   m_ObjectHideFlags: 0

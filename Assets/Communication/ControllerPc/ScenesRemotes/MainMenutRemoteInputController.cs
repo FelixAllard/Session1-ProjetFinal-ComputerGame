@@ -2,8 +2,7 @@
 
 namespace Communication.ControllerPc.ScenesRemotes
 {
-    public class MainMenutRemoteInputController : MonoBehaviour, IRemoteInputController
-    {
+    public class MainMenutRemoteInputController : MonoBehaviour, IRemoteInputController{
         public StartGameScript startGame;
         public void OnButtonA()
         
@@ -25,6 +24,11 @@ namespace Communication.ControllerPc.ScenesRemotes
         public void OnButtonD()
         {
 
+        }
+
+        public void ReceivedMessageFromRobot(string message)
+        {
+            
         }
     }
 }

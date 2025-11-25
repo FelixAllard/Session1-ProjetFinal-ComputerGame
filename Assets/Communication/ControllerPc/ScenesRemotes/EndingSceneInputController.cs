@@ -24,5 +24,10 @@ namespace Communication.ControllerPc.ScenesRemotes
         {
             throw new System.NotImplementedException();
         }
+
+        public void ReceivedMessageFromRobot(string message)
+        {
+            
+        }
     }
 }

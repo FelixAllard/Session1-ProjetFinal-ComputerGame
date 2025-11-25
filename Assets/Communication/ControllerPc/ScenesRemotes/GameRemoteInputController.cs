@@ -53,5 +53,10 @@ namespace Communication.ControllerPc.ScenesRemotes
             questionManager.AnswerSelected(3);
             buttonClicked = true;
         }
+
+        public void ReceivedMessageFromRobot(string message)
+        {
+            
+        }
     }
 }
