@@ -1266,6 +1266,7 @@ GameObject:
   - component: {fileID: 1092801120}
   - component: {fileID: 1092801121}
   - component: {fileID: 1092801122}
+  - component: {fileID: 1092801123}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1345,6 +1346,18 @@ MonoBehaviour:
   ip: 192.168.4.1
   port: 23
   CommunicationManager: {fileID: 1092801120}
+--- !u!114 &1092801123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092801117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405ebb3a61b44673a469290cb59a181e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Script.Utilities.UnityMainThreadDispatcher
 --- !u!1 &1221124156
 GameObject:
   m_ObjectHideFlags: 0

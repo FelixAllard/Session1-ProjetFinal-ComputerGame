@@ -1,4 +1,6 @@
-﻿using Script.Utilities;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Script.Utilities;
 
 namespace Communication.RobotPc
 {
@@ -40,13 +42,29 @@ namespace Communication.RobotPc
         void Start()
         {
             Connect();
-            Send("Connected");
-            
+            Invoke(nameof(SendInitial), 0.5f);
         }
+
+        void SendInitial()
+        {
+            Send("Connected");
+            StartCoroutine(TestConnection());
+        }
+        
+
 
         void OnApplicationQuit()
         {
             Disconnect();
+        }
+
+        IEnumerator TestConnection()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1f);
+                Send("My god");
+            }
         }
 
         // -----------------------------
@@ -79,6 +97,7 @@ namespace Communication.RobotPc
         // -----------------------------
         public void Disconnect()
         {
+            Debug.LogWarning("Disconnected from ESP8266!");
             OnMessageReceived -= CommunicationManager.Instance.ReceivedMessageFromRobot;
             running = false;
 
@@ -94,10 +113,12 @@ namespace Communication.RobotPc
         // -----------------------------
         public void Send(string msg)
         {
-            if (client == null || !client.Connected) return;
+            if (client == null || !client.Connected)
+                return;
 
             try
             {
+                msg += "\n";  // REQUIRED for Arduino parsing
                 byte[] bytes = Encoding.ASCII.GetBytes(msg);
                 stream.Write(bytes, 0, bytes.Length);
             }
@@ -106,6 +127,7 @@ namespace Communication.RobotPc
                 Debug.LogError("TCP Send Error: " + ex.Message);
             }
         }
+
 
         // -----------------------------
         // RECEIVE LOOP (Background)
