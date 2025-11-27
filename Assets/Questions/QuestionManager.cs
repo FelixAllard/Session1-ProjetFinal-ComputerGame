@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -25,7 +26,7 @@ namespace Questions
         
         public static int lastCorrect;
         public static string[] lastAnswers = new string[4];
-        
+
         public static List<IQuestion> questions;
         public IQuestion questionChosen;
         
@@ -39,11 +40,15 @@ namespace Questions
         public static int score;
 
         private bool answered = false;
-        
+
+        public static bool suivant = false;
         
         private void Start()
         {
            
+            
+            //questions = new List<IQuestion>(1);
+            
             originalColors = new Color[answerButtons.Length];
             for (int i = 0; i < answerButtons.Length; i++)
                 originalColors[i] = answerButtons[i].GetComponent<Image>().color;
@@ -61,7 +66,7 @@ namespace Questions
 
             questionChosen = GetRandomQuestion(questions);
             questions.Remove(questionChosen);
-
+            
             
                 questionTMP.text = questionChosen.Question;
 
@@ -69,8 +74,8 @@ namespace Questions
                 answer2TMP.text = questionChosen.Answer2;
                 answer3TMP.text = questionChosen.Answer3;
                 answer4TMP.text = questionChosen.Answer4;
-            
-          
+
+                suivant = false;
         }
 
         public void AnswerSelected(int buttonClicked)
@@ -115,10 +120,15 @@ namespace Questions
             else
             {
                 questionTMP.text = "Mauvaise Reponse";
-                scoreTMP.text = "Score : " + score;
+                scoreTMP.text = "Score : " + 0;
             }
 
-            nextButton.gameObject.SetActive(true);
+            
+           char letter = questionChosen.Letter;
+           CommunicationManager.Instance.SendMessageToRobot(letter.ToString());
+           
+           StartCountdown();
+           
         }
 
         
@@ -133,7 +143,7 @@ namespace Questions
                 Answer3 = "Russie",
                 Answer4 = "Maroc",
                 Answer = 2,
-                Letter ='A'
+                Letter ='D'
             },
             new Question2()
             {
@@ -144,7 +154,7 @@ namespace Questions
                 Answer3 = "Corée",
                 Answer4 = "Ukraine",
                 Answer = 3,
-                Letter ='B'
+                Letter ='C'
             },
             new Question3()
             {
@@ -155,7 +165,7 @@ namespace Questions
                 Answer3 = "États-Unis",
                 Answer4 = "Nigéria",
                 Answer = 0,
-                Letter ='C'
+                Letter ='D'
             },
             new Question4()
             {
@@ -166,7 +176,7 @@ namespace Questions
                 Answer3 = "Italie",
                 Answer4 = "Egypte",
                 Answer = 1,
-                Letter ='D'
+                Letter ='A'
             }
         };
 
@@ -181,7 +191,7 @@ namespace Questions
                 Answer3 = "Europe",
                 Answer4 = "Asie",
                 Answer = 0,
-                Letter ='E'
+                Letter ='B'
             },
             new Question2()
             {
@@ -192,7 +202,7 @@ namespace Questions
                 Answer3 = "Andorre",
                 Answer4 = "Armenie",
                 Answer = 3,
-                Letter ='F'
+                Letter ='D'
             },
             
             new Question3()
@@ -204,18 +214,18 @@ namespace Questions
                 Answer3 = "Chine",
                 Answer4 = "Colombie",
                 Answer = 2,
-                Letter ='G'
+                Letter ='D'
             },
             
             new Question4 ()
             {
-                Question = "De quel pays le congo a t'il obtenu son independance en 1960",
+                Question = "De quel pays le Congo a t'il obtenu son independance en 1960",
                 Answer1 = "France",
                 Answer2 = "Belgique",
                 Answer3 = "Spain",
                 Answer4= "Royaume-Uni",
                 Answer = 1,
-                Letter ='H'
+                Letter ='C'
             },
             
         };
@@ -249,6 +259,20 @@ namespace Questions
 
             timerTMP.text = timer.ToString("0"); // affiche juste un entier
         }
+        
+        private void StartCountdown()
+        {
+            StartCoroutine(Wait10SecondsAndContinue());
+            
+        }
+        IEnumerator Wait10SecondsAndContinue()
+        {
+            yield return new WaitForSeconds(20);
+            nextButton.gameObject.SetActive(true);
+            suivant = true;
+            
+        }
+        
         private void ForceWrongAnswer()
         {
             answered = true;

@@ -1,4 +1,5 @@
 using System;
+using System.IO.Ports;
 using System.Net.Configuration;
 using Communication.ControllerPc;
 using Communication.RobotPc;
@@ -10,6 +11,9 @@ public class CommunicationManager : MonoBehaviour
     public static CommunicationManager Instance;
 
     private IRemoteInputController currentHandler;
+    
+    private string lastMessage;
+    SerialPort serialPort;
     
 
     private void Awake()
@@ -31,6 +35,17 @@ public class CommunicationManager : MonoBehaviour
         ESP_RobotConnection.Instance.OnMessageReceived += ReceivedMessageFromRobot;
     }
 
+    
+    void Update()
+    {
+        if (serialPort != null && serialPort.IsOpen && serialPort.BytesToRead > 0)
+        {
+            string msg = serialPort.ReadLine().Trim();
+            OnMessageReceived(msg);
+        }
+    }
+    
+    
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         currentHandler = FindFirstHandlerInScene();
@@ -86,6 +101,15 @@ public class CommunicationManager : MonoBehaviour
         Debug.Log("Received Message: " + message);
         if(message.Contains("Heart"))
             return;
+        currentHandler.ReceivedMessageFromRobot(message);
+        
         
     }
+    public void OnMessageReceived(string msg)
+    {
+        lastMessage = msg;
+        Debug.Log("Message reçu du robot : " + msg);
+    }
+
+  
 }

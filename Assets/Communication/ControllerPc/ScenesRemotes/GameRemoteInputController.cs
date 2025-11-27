@@ -1,62 +1,72 @@
 ﻿using System;
+using System.Collections;
 using Questions;
 using UnityEngine;
+
 
 namespace Communication.ControllerPc.ScenesRemotes
 {
     public class GameRemoteInputController: MonoBehaviour, IRemoteInputController
     {
-        private bool buttonClicked = false;
+        [NonSerialized]
+     
+        
+        private bool buttonClicked = true;
         public QuestionManager questionManager;
         
-
+        private void SendQuestionLetter()
+        {
+            char letter = questionManager.questionChosen.Letter;
+            CommunicationManager.Instance.SendMessageToRobot(letter.ToString());
+        }
+        
+        
         public void OnButtonA()
         {
-            if (buttonClicked)
-            {
-                questionManager.Next();
-                buttonClicked = false;
-            }
-            questionManager.AnswerSelected(0);
-            buttonClicked = true;
+                questionManager.AnswerSelected(0);
+                
+                if (QuestionManager.suivant == true)
+                {
+                    questionManager.Next();
+                }
+                
         }
 
         public void OnButtonB()
         {
-            if (buttonClicked)
-            {
-                questionManager.Next();
-                buttonClicked = false;
-            }
-            questionManager.AnswerSelected(1);
-            buttonClicked = true;
+                 questionManager.AnswerSelected(1);
+                 if (QuestionManager.suivant == true)
+                 {
+                     questionManager.Next();
+                 }
+           
         }
 
         public void OnButtonC()
         {
-            if (buttonClicked)
-            {
-                questionManager.Next();
-                buttonClicked = false;
-            }
-            questionManager.AnswerSelected(2);
-            buttonClicked = true;
+                questionManager.AnswerSelected(2);
+                if (QuestionManager.suivant == true)
+                {
+                    questionManager.Next();
+                }
+            
         }
 
         public void OnButtonD()
         {
-            if (buttonClicked)
-            {
-                questionManager.Next();
-                buttonClicked = false;
-            }
-            questionManager.AnswerSelected(3);
-            buttonClicked = true;
+            
+                questionManager.AnswerSelected(3);
+                if (QuestionManager.suivant == true)
+                {
+                    questionManager.Next();
+                }
         }
+
+        
 
         public void ReceivedMessageFromRobot(string message)
         {
-            
+            CommunicationManager.Instance.SendMessageToRobot("Neck hurt");
         }
     }
 }
