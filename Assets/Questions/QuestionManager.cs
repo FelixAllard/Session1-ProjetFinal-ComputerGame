@@ -26,7 +26,7 @@ namespace Questions
         
         public static int lastCorrect;
         public static string[] lastAnswers = new string[4];
-
+        
         public static List<IQuestion> questions;
         public IQuestion questionChosen;
         
@@ -46,9 +46,6 @@ namespace Questions
         private void Start()
         {
            
-            
-            //questions = new List<IQuestion>(1);
-            
             originalColors = new Color[answerButtons.Length];
             for (int i = 0; i < answerButtons.Length; i++)
                 originalColors[i] = answerButtons[i].GetComponent<Image>().color;
@@ -63,6 +60,8 @@ namespace Questions
                 else if (!GameSettings.Instance.easyMode)
                     questions = new List<IQuestion>(HardQuestions);
             }
+            
+            questions = questions.OrderBy(q => Random.value).Take(3).ToList();
 
             questionChosen = GetRandomQuestion(questions);
             questions.Remove(questionChosen);
@@ -137,7 +136,7 @@ namespace Questions
             new Question1()
             {
                 Id = 0,
-                Question = "Quel est le plus grand pays du monde",
+                Question = "Quel est le plus grand pays du monde ?",
                 Answer1 = "Canada",
                 Answer2 = "France",
                 Answer3 = "Russie",
@@ -148,7 +147,7 @@ namespace Questions
             new Question2()
             {
                 Id = 1,
-                Question = "Quel pays n'est pas en Asie",
+                Question = "Quel pays n'est pas en Asie ?",
                 Answer1 = "Chine",
                 Answer2 = "Japon",
                 Answer3 = "Corée",
@@ -159,7 +158,7 @@ namespace Questions
             new Question3()
             {
                 Id = 2,
-                Question = "Quel pays est le plus peuple",
+                Question = "Quel pays est le plus peuple ?",
                 Answer1 = "Inde",
                 Answer2 = "Chine",
                 Answer3 = "États-Unis",
@@ -170,14 +169,48 @@ namespace Questions
             new Question4()
             {
                 Id = 3,
-                Question = "Quel pays a une feuille d'erable sur son drapeau",
+                Question = "Quel pays a une feuille d'erable sur son drapeau ?",
                 Answer1 = "Mexique",
                 Answer2 = "Canada",
                 Answer3 = "Italie",
                 Answer4 = "Egypte",
                 Answer = 1,
                 Letter ='A'
-            }
+            },
+          
+            new Question6()
+            {
+            Id = 3,
+            Question = "Ou se trouve la foret Amazonienne ?",
+            Answer1 = "Bresil",
+            Answer2 = "Argentine",
+            Answer3 = "Colombie",
+            Answer4 = "Moldavie",
+            Answer = 0,
+            Letter ='B'
+            },
+            new Question7()
+            {
+                Id = 3,
+                Question = "Sur quel continent se situe Madagascar ?",
+                Answer1 = "Amerique du Nord",
+                Answer2 = "Amerique du Sud",
+                Answer3 = "Europe",
+                Answer4 = "Afrique",
+                Answer = 3,
+                Letter ='E'
+            },
+            new Question8()
+            {
+            Id = 3,
+            Question = "Quel pays est en Afrique ?",
+            Answer1 = "France",
+            Answer2 = "Senegal",
+            Answer3 = "Belgique",
+            Answer4 = "Inde",
+            Answer = 1,
+            Letter ='E'
+        }
         };
 
         public static List<IQuestion> HardQuestions = new List<IQuestion>()
@@ -227,7 +260,7 @@ namespace Questions
                 Answer = 1,
                 Letter ='C'
             },
-            
+           
         };
         
         public IQuestion GetRandomQuestion(List<IQuestion> x)
@@ -295,7 +328,11 @@ namespace Questions
             questionTMP.text = "Temps ecoule ! Mauvaise reponse";
             
             scoreTMP.text = "Score : " + 0;
+            
+            char letter = questionChosen.Letter;
+            CommunicationManager.Instance.SendMessageToRobot(letter.ToString());
 
+            suivant = true;
             nextButton.gameObject.SetActive(true);
         }
 
