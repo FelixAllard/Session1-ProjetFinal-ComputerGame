@@ -184,7 +184,7 @@ namespace Questions
             Question = "Ou se trouve la foret Amazonienne ?",
             Answer1 = "Bresil",
             Answer2 = "Argentine",
-            Answer3 = "Colombie",
+            Answer3 = "Mexique",
             Answer4 = "Moldavie",
             Answer = 0,
             Letter ='B'
@@ -210,7 +210,112 @@ namespace Questions
             Answer4 = "Inde",
             Answer = 1,
             Letter ='E'
-        }
+        },
+            
+           
+            new Question1()
+            {
+                Id = 1,
+                Question = "Pour quelle equipe allez vous voter ?",
+                Answer1 = "Les echecs",
+                Answer2 = "Battle Pupus! P8",
+                Answer3 = "Garfield",
+                Answer4 = "Autre",
+                Answer = 1,
+                Letter ='B'
+            },
+            new Question1()
+            {
+                Id = 2,
+                Question = "Dans quel pays se situe la grande muraille de chine ?",
+                Answer1 = "Chine",
+                Answer2 = "Cuba",
+                Answer3 = "Egypte",
+                Answer4 = "Afrique du Sud",
+                Answer = 0,
+                Letter ='D'
+            },
+            new Question4()
+            {
+                Id = 3,
+                Question = "Dans quel pays se trouvent les grandes pyramides ?",
+                Answer1 = "Soudan",
+                Answer2 = "Egypte",
+                Answer3 = "Mali",
+                Answer4 = "Las Vegas",
+                Answer = 1,
+                Letter ='E'
+            },
+          
+            new Question6()
+            {
+            Id = 3,
+            Question = "Quel est le plus grand continent ?",
+            Answer1 = "Asie",
+            Answer2 = "Europe",
+            Answer3 = "Amerique du Nord",
+            Answer4 = "Afrique",
+            Answer = 0,
+            Letter ='D'
+            },
+            new Question7()
+            {
+                Id = 3,
+                Question = "Dans quel continent se situe le desert du Sahara ?",
+                Answer1 = "Asie",
+                Answer2 = "Amerique du Sud",
+                Answer3 = "Europe",
+                Answer4 = "Afrique",
+                Answer = 3,
+                Letter ='E'
+            },
+            new Question8()
+            {
+            Id = 3,
+            Question = "Ou se trouve le mont Everest ?",
+            Answer1 = "France",
+            Answer2 = "Nepal",
+            Answer3 = "Pakistan",
+            Answer4 = "Inde",
+            Answer = 1,
+            Letter ='D'
+        },
+            
+            new Question8()
+                        {
+                        Id = 3,
+                        Question = "Quel pays a pour capitale Rome ?",
+                        Answer1 = "Autriche",
+                        Answer2 = "Algerie",
+                        Answer3 = "Grece",
+                        Answer4 = "Italie",
+                        Answer = 3,
+                        Letter ='C'
+                    },
+            
+            new Question8()
+            {
+                Id = 3,
+                Question = "Quel pays est au Sud de l'équateur ?",
+                Answer1 = "Espagne",
+                Answer2 = "Mexique",
+                Answer3 = "Argentine",
+                Answer4 = "Kosovo",
+                Answer = 2,
+                Letter ='B'
+            },
+            
+            new Question8()
+            {
+                Id = 3,
+                Question = "Quel pays a comme animal national l'aigle a tête blanche ?",
+                Answer1 = "Canada",
+                Answer2 = "Etats-unis",
+                Answer3 = "Croatie",
+                Answer4 = "Albanie",
+                Answer = 1,
+                Letter ='A'
+            },
         };
 
         public static List<IQuestion> HardQuestions = new List<IQuestion>()
@@ -218,7 +323,7 @@ namespace Questions
             new Question1()
             {
                 Id = 0,
-                Question = "Sur quel continent se situe le departement francais de la Guyane",
+                Question = "Sur quel continent se situe la Guyane ?",
                 Answer1 = "Amerique du Sud",
                 Answer2 = "Afrique",
                 Answer3 = "Europe",
@@ -229,7 +334,7 @@ namespace Questions
             new Question2()
             {
                 Id = 1,
-                Question = "Quel pays n'est pas en Europe",
+                Question = "Quel pays n'est pas en Europe ?",
                 Answer1 = "Estonie",
                 Answer2 = "Moldavie",
                 Answer3 = "Andorre",
@@ -241,7 +346,7 @@ namespace Questions
             new Question3()
             {
                 Id = 2,
-                Question = "Quel pays est accusé de persecuter la minorite ouighoure ?",
+                Question = "Quel pays a comme capitale Pekin ?",
                 Answer1 = "Russie",
                 Answer2 = "Arabie Saoudite",
                 Answer3 = "Chine",
@@ -252,7 +357,7 @@ namespace Questions
             
             new Question4 ()
             {
-                Question = "De quel pays le Congo a t'il obtenu son independance en 1960",
+                Question = "De quel pays le Congo a t'il obtenu son independance en 1960 ?",
                 Answer1 = "France",
                 Answer2 = "Belgique",
                 Answer3 = "Spain",
@@ -260,7 +365,76 @@ namespace Questions
                 Answer = 1,
                 Letter ='C'
             },
-           
+            
+                        
+            new Question5 ()
+            {
+                Question = "Quel pays est surnomme le pays du soleil-levant ?",
+                Answer1 = "Chine",
+                Answer2 = "Vietnam",
+                Answer3 = "Australie",
+                Answer4= "Japon",
+                Answer = 3,
+                Letter ='D'
+            },
+            
+            new Question6 ()
+            {
+                Question = "Lequel de ces pays se situe en scandinavie ?",
+                Answer1 = "Norvege",
+                Answer2 = "Irlande",
+                Answer3 = "Chili",
+                Answer4= "Zimbabwe",
+                Answer = 0,
+                Letter ='C'
+            },
+
+            new Question7 ()
+            {
+                Question = "Dans quel pays se situe le plus grand lac d'eau douce au monde, le lac Superieur ?",
+                Answer1 = "Chine",
+                Answer2 = "Canada",
+                Answer3 = "Etats-unis",
+                Answer4 = "Cameroun",
+                Answer = 1,
+                Letter ='A'
+            },
+
+            new Question8 ()
+            {
+                Question = "Sur quel continent se trouve la Sierra Leone ?",
+                Answer1 = "Asie",
+                Answer2 = "Europe",
+                Answer3 = "Afrique",
+                Answer4= "Amerique du Sud",
+                Answer = 2,
+                Letter ='E'
+            },
+            
+            new Question9 ()
+            {
+                Question = "Dans quel pays se trouve le mont Kilimanjaro ?",
+                Answer1 = "Suisse",
+                Answer2 = "Cambodge",
+                Answer3 = "Nepal",
+                Answer4= "Tanzanie",
+                Answer = 3,
+                Letter ='E'
+            },
+            
+            new Question1 ()
+            {
+                Question = "Sur qul continent se trouve la Sierra Leone ?",
+                Answer1 = "Asie",
+                Answer2 = "Europe",
+                Answer3 = "Afrique",
+                Answer4= "Amerique du Sud",
+                Answer = 2,
+                Letter ='E'
+            },
+            
+
+            
         };
         
         public IQuestion GetRandomQuestion(List<IQuestion> x)
